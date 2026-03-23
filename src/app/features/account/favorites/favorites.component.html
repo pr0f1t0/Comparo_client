@@ -1,0 +1,37 @@
+<div class="favorites-page">
+  <h1 class="page-title">Favorite Products</h1>
+
+  <!-- Loading -->
+  <div *ngIf="loading()" class="loading-state">
+    <mat-spinner diameter="36" />
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!loading() && !products().length" class="empty-state">
+    <mat-icon>favorite_border</mat-icon>
+    <p>No favorite products yet. Browse products and tap the heart icon to save them here.</p>
+  </div>
+
+  <!-- Product list -->
+  <div *ngIf="!loading() && products().length" class="favorites-list">
+    <div *ngFor="let product of products()" class="fav-item">
+      <img
+        class="fav-item__img"
+        [src]="product.images[0] || 'assets/placeholder.png'"
+        [alt]="product.name"
+      />
+      <div class="fav-item__body">
+        <p class="fav-item__name">{{ product.name }}</p>
+        <p class="fav-item__price">${{ product.basePrice | number:'1.2-2' }}</p>
+      </div>
+      <div class="fav-item__actions">
+        <button mat-icon-button routerLink="/compare" aria-label="Compare">
+          <mat-icon>compare_arrows</mat-icon>
+        </button>
+        <button mat-icon-button (click)="removeFavorite(product.id)" aria-label="Remove from favorites">
+          <mat-icon class="fav-heart">favorite</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

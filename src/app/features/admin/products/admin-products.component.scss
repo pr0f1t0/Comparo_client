@@ -1,0 +1,121 @@
+@use '../../../../app/styles/variables' as v;
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: v.$text-primary;
+  margin: 0 0 1.5rem;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.table-wrap {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.85rem;
+  }
+
+  th {
+    background: v.$background;
+    font-weight: 600;
+    color: v.$text-secondary;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid v.$border;
+  }
+
+  td {
+    color: v.$text-primary;
+    border-bottom: 1px solid v.$border;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.product-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: v.$background;
+}
+
+.name-cell {
+  font-weight: 500;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.actions-cell {
+  white-space: nowrap;
+
+  .action-btn + .action-btn {
+    margin-left: 0.35rem;
+  }
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid v.$border;
+  border-radius: 6px;
+  background: v.$surface;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &--view {
+    color: v.$text-secondary;
+    &:hover { background: #e3f2fd; color: #1565c0; border-color: #1565c0; }
+  }
+
+  &--delete {
+    color: v.$text-secondary;
+    &:hover { background: #ffebee; color: v.$error; border-color: v.$error; }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem 0;
+  color: v.$text-secondary;
+
+  mat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
+  p { font-size: 0.9rem; margin: 0; }
+}

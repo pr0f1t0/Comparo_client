@@ -1,0 +1,41 @@
+<nav class="navbar">
+  <div class="navbar__inner">
+
+    <!-- Logo -->
+    <a routerLink="/" class="navbar__logo">
+      <mat-icon class="navbar__logo-icon">compare_arrows</mat-icon>
+      <span class="navbar__logo-text">Comparo</span>
+    </a>
+
+    <!-- Search -->
+    <div class="navbar__search">
+      <mat-icon class="navbar__search-icon">search</mat-icon>
+      <input
+        type="text"
+        placeholder="Search product..."
+        class="navbar__search-input"
+        (keyup.enter)="onSearch($any($event.target).value)"
+        #navSearch
+      />
+    </div>
+
+    <!-- Auth actions -->
+    <div class="navbar__actions">
+      <ng-container *ngIf="authenticated(); else loggedOut">
+        <button mat-icon-button class="navbar__icon-btn" aria-label="Notifications">
+          <mat-icon>notifications_none</mat-icon>
+        </button>
+        <button *ngIf="isAdmin" mat-icon-button routerLink="/admin" class="navbar__icon-btn navbar__icon-btn--admin" aria-label="Admin Panel">
+          <mat-icon>admin_panel_settings</mat-icon>
+        </button>
+        <button mat-icon-button routerLink="/account" class="navbar__avatar" aria-label="Account">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </ng-container>
+      <ng-template #loggedOut>
+        <button class="navbar__cta" (click)="login()">My Account</button>
+      </ng-template>
+    </div>
+
+  </div>
+</nav>

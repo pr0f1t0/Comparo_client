@@ -1,0 +1,67 @@
+<div class="comparison-page">
+
+  <!-- Loading -->
+  <div *ngIf="loading()" class="state-overlay">
+    <mat-spinner diameter="48" />
+    <p>Analysing products…</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading() && error()" class="state-overlay state-overlay--error">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ error() }}</p>
+    <button mat-stroked-button routerLink="/">Go back</button>
+  </div>
+
+  <!-- Content -->
+  <ng-container *ngIf="!loading() && !error() && comparison() as data">
+
+    <!-- Page header -->
+    <header class="page-header">
+      <span class="breadcrumb">Product Comparison</span>
+      <h1>Product Showdown</h1>
+      <p class="subtitle">
+        Comparing {{ data.products.length }} products side-by-side.
+      </p>
+    </header>
+
+    <!-- Comparison table -->
+    <app-comparison-table [data]="data" />
+
+    <!-- Trust badges -->
+    <section class="trust-badges">
+      <div class="badge">
+        <div class="badge__icon">
+          <mat-icon>verified</mat-icon>
+        </div>
+        <h3>Verified Specs</h3>
+        <p>All specifications are verified for accuracy so you can compare with confidence.</p>
+      </div>
+      <div class="badge">
+        <div class="badge__icon">
+          <mat-icon>compare_arrows</mat-icon>
+        </div>
+        <h3>Side-by-Side</h3>
+        <p>Easily spot differences between products with highlighted differing attributes.</p>
+      </div>
+      <div class="badge">
+        <div class="badge__icon">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+        <h3>Best Prices</h3>
+        <p>Compare prices across multiple shops to find the best deal for each product.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <h2>Want to compare more?</h2>
+      <p>Browse our catalog and add more products to your comparison.</p>
+      <button mat-flat-button class="cta-btn" routerLink="/search">
+        <mat-icon>search</mat-icon>
+        Browse Products
+      </button>
+    </section>
+
+  </ng-container>
+</div>

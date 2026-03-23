@@ -1,0 +1,52 @@
+<div class="settings-page">
+  <h1 class="page-title">Account Settings</h1>
+  <p class="page-desc">Update your information and manage your comparison preferences.</p>
+
+  <div *ngIf="loading()" class="loading-state">
+    <mat-spinner diameter="36" />
+  </div>
+
+  <ng-container *ngIf="!loading()">
+
+    <!-- Personal Information -->
+    <section class="card">
+      <h2 class="card__title">
+        <mat-icon class="card__icon">badge</mat-icon>
+        Personal Information
+      </h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input
+            type="text"
+            class="form-input"
+            [(ngModel)]="firstName"
+            placeholder="First Name"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input
+            type="text"
+            class="form-input"
+            [(ngModel)]="lastName"
+            placeholder="Last Name"
+          />
+        </div>
+      </div>
+
+      <div class="card__actions">
+        <button
+          mat-flat-button
+          class="btn-save"
+          (click)="save()"
+          [disabled]="saving()"
+        >
+          {{ saving() ? 'Saving...' : 'Save Changes' }}
+        </button>
+      </div>
+    </section>
+
+  </ng-container>
+</div>

@@ -1,0 +1,49 @@
+<div class="saved-lists-page">
+  <div class="page-header">
+    <h1 class="page-title">My Saved Lists</h1>
+    <button mat-flat-button class="btn-new" (click)="showNewInput.set(true)">
+      <mat-icon>add</mat-icon>
+      New List
+    </button>
+  </div>
+
+  <!-- New list input -->
+  <div *ngIf="showNewInput()" class="new-list-input">
+    <input
+      #newListInput
+      type="text"
+      class="form-input"
+      placeholder="List name..."
+      (keyup.enter)="createList(newListInput.value); newListInput.value = ''"
+    />
+    <button mat-stroked-button (click)="showNewInput.set(false)">Cancel</button>
+    <button mat-flat-button class="btn-save" (click)="createList(newListInput.value); newListInput.value = ''">
+      Create
+    </button>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!lists().length && !showNewInput()" class="empty-state">
+    <mat-icon>list_alt</mat-icon>
+    <p>No saved lists yet. Create one to start organizing your comparisons.</p>
+  </div>
+
+  <!-- List cards -->
+  <div class="lists-grid">
+    <div *ngFor="let list of lists()" class="list-card" (click)="openList(list.id)">
+      <div class="list-card__header">
+        <div class="list-card__icon">
+          <mat-icon>folder</mat-icon>
+        </div>
+        <span class="list-card__count">{{ list.productIds.length }} items</span>
+      </div>
+      <h3 class="list-card__name">{{ list.name }}</h3>
+      <p class="list-card__date">Created {{ formatDate(list.createdAt) }}</p>
+      <div class="list-card__actions">
+        <button mat-icon-button (click)="deleteList(list.id, $event)" aria-label="Delete list">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

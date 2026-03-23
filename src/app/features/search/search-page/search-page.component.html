@@ -1,0 +1,247 @@
+<div class="search-layout">
+
+  <!-- Filters Sidebar -->
+  <aside class="filters">
+    <div class="filters__header">
+      <h3 class="filters__title">
+        <mat-icon>filter_list</mat-icon>
+        Filters
+      </h3>
+      <button
+        *ngIf="hasActiveFilters"
+        class="filters__clear"
+        (click)="clearFilters()"
+      >
+        Clear all
+      </button>
+    </div>
+
+    <!-- Price range -->
+    <div class="filter-group">
+      <h4 class="filter-group__title">Price Range</h4>
+      <p *ngIf="priceRange().max > 0" class="filter-group__hint">
+        ${{ priceRange().min | number:'1.0-0' }} – ${{ priceRange().max | number:'1.0-0' }}
+      </p>
+      <div class="filter-group__row">
+        <input
+          type="number"
+          class="filter-input"
+          placeholder="Min"
+          [(ngModel)]="minPrice"
+        />
+        <span class="filter-group__sep">–</span>
+        <input
+          type="number"
+          class="filter-input"
+          placeholder="Max"
+          [(ngModel)]="maxPrice"
+        />
+      </div>
+      <button
+        mat-stroked-button
+        class="filter-group__apply"
+        (click)="applyPriceFilter()"
+      >
+        Apply
+      </button>
+    </div>
+
+    <!-- Dynamic facets -->
+    <div *ngFor="let key of facetKeys()" class="filter-group">
+      <h4 class="filter-group__title">{{ key }}</h4>
+      <div class="filter-group__options">
+        <button
+          *ngFor="let value of facets()[key]"
+          class="facet-chip"
+          [class.facet-chip--active]="isFacetSelected(key, value)"
+          (click)="onFacetSelect(key, value)"
+        >
+          {{ value }}
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!--Main Content-->
+  <div class="results">
+
+    <!-- Header bar -->
+    <div class="results__header">
+      <p class="results__count" *ngIf="!loading()">
+        <strong>{{ totalElements() | number }}</strong> results
+        <span *ngIf="keyword"> for "{{ keyword }}"</span>
+      </p>
+
+      <div class="results__sort">
+        <label class="sort-label">Sort by:</label>
+        <select
+          class="sort-select"
+          [ngModel]="sortBy"
+          (ngModelChange)="onSortChange($event)"
+        >
+          <option value="">Relevance</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="rating_desc">Top Rated</option>
+          <option value="reviews_desc">Most Reviewed</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading()" class="loading-state">
+      <mat-spinner diameter="40" />
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading() && !products().length" class="empty-state">
+      <mat-icon>search_off</mat-icon>
+      <h3>No products found</h3>
+      <p>Try adjusting your search or filters.</p>
+    </div>
+
+    <!-- Product grid -->
+    <div *ngIf="!loading() && products().length" class="product-grid">
+      <div *ngFor="let product of products()" class="product-card" (click)="openProduct(product.id)">
+        <div class="product-card__img-wrap">
+          <img
+            [src]="getProductImage(product)"
+            [alt]="product.name"
+            class="product-card__img"
+          />
+        </div>
+
+        <div class="product-card__body">
+          <span class="product-card__category">{{ product.categoryName }}</span>
+          <h4 class="product-card__name">{{ product.name }}</h4>
+
+          <!-- Rating -->
+          <div *ngIf="product.averageRating > 0" class="product-card__rating">
+            <span class="stars">
+              <mat-icon *ngFor="let s of getRatingStars(product.averageRating)"
+                [class.star--filled]="s === 1"
+                [class.star--empty]="s === 0"
+              >
+                {{ s === 1 ? 'star' : 'star_border' }}
+              </mat-icon>
+            </span>
+            <span class="rating-text">{{ product.averageRating | number:'1.1-1' }}</span>
+            <span class="review-count">({{ product.reviewsCount }})</span>
+          </div>
+
+          <!-- Price -->
+          <div class="product-card__price">
+            <span class="price-main">${{ product.minPrice | number:'1.2-2' }}</span>
+            <span *ngIf="product.maxPrice > product.minPrice" class="price-range">
+              – ${{ product.maxPrice | number:'1.2-2' }}
+            </span>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="product-card__actions">
+            <button
+              class="product-card__action-btn"
+              [class.product-card__action-btn--active]="compareService.isSelected(product.id)"
+              (click)="toggleCompare(product.id); $event.stopPropagation()"
+              [attr.aria-label]="compareService.isSelected(product.id) ? 'Remove from comparison' : 'Add to comparison'"
+            >
+              <mat-icon>compare_arrows</mat-icon>
+            </button>
+            <button
+              *ngIf="isAuthenticated()"
+              class="product-card__action-btn"
+              (click)="toggleListDropdown(product.id); $event.stopPropagation()"
+              aria-label="Add to list"
+            >
+              <mat-icon>playlist_add</mat-icon>
+            </button>
+            <button
+              class="product-card__action-btn"
+              [class.product-card__action-btn--fav]="isFavorite(product.id)"
+              (click)="toggleFavorite(product.id); $event.stopPropagation()"
+              [attr.aria-label]="isFavorite(product.id) ? 'Remove from favorites' : 'Add to favorites'"
+            >
+              <mat-icon>{{ isFavorite(product.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- Add-to-list dropdown -->
+        <div
+          *ngIf="isAuthenticated() && openDropdownProductId === product.id"
+          class="list-dropdown"
+          (click)="$event.stopPropagation()"
+        >
+          <div class="list-dropdown__header">Add to list</div>
+          <div *ngIf="savedLists().length" class="list-dropdown__items">
+            <button
+              *ngFor="let list of savedLists()"
+              class="list-dropdown__item"
+              (click)="addToList(list.id, product.id)"
+            >
+              <mat-icon class="list-dropdown__item-icon">list</mat-icon>
+              <span class="list-dropdown__item-name">{{ list.name }}</span>
+              <mat-icon
+                *ngIf="isProductInList(list.id, product.id)"
+                class="list-dropdown__item-check"
+              >check</mat-icon>
+            </button>
+          </div>
+          <div class="list-dropdown__divider" *ngIf="savedLists().length"></div>
+          <div *ngIf="!creatingNewList" class="list-dropdown__create-btn-wrap">
+            <button class="list-dropdown__create-btn" (click)="creatingNewList = true">
+              <mat-icon>add</mat-icon>
+              Create new list
+            </button>
+          </div>
+          <div *ngIf="creatingNewList" class="list-dropdown__new-form">
+            <input
+              type="text"
+              class="list-dropdown__new-input"
+              placeholder="List name"
+              [(ngModel)]="newListName"
+              (keyup.enter)="createListAndAdd(product.id)"
+              #newListInput
+            />
+            <button
+              class="list-dropdown__new-submit"
+              [disabled]="!newListName.trim()"
+              (click)="createListAndAdd(product.id)"
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav *ngIf="totalPages() > 1" class="pagination">
+      <button
+        class="pagination__btn"
+        [disabled]="currentPage === 0"
+        (click)="goToPage(currentPage - 1)"
+      >
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <button
+        *ngFor="let p of pageNumbers"
+        class="pagination__btn"
+        [class.pagination__btn--active]="p === currentPage"
+        (click)="goToPage(p)"
+      >
+        {{ p + 1 }}
+      </button>
+
+      <button
+        class="pagination__btn"
+        [disabled]="currentPage >= totalPages() - 1"
+        (click)="goToPage(currentPage + 1)"
+      >
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </nav>
+
+  </div>
+</div>

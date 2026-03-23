@@ -68,8 +68,14 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "6kB",
+                  "maximumError": "10kB"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
                 }
               ],
               "outputHashing": "all"
@@ -89,7 +95,8 @@
               "buildTarget": "comparo-web:build:production"
             },
             "development": {
-              "buildTarget": "comparo-web:build:development"
+              "buildTarget": "comparo-web:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

@@ -1,0 +1,85 @@
+<div class="table-wrapper">
+
+  <!-- Filter toggle -->
+  <div class="table-toolbar">
+    <button mat-stroked-button (click)="toggleDiffs()" class="diff-toggle">
+      <mat-icon>{{ showOnlyDiffs() ? 'visibility' : 'compare_arrows' }}</mat-icon>
+      {{ showOnlyDiffs() ? 'Show all specs' : 'Show differences only' }}
+    </button>
+  </div>
+
+  <div class="table-scroll">
+    <table class="comparison-table">
+
+      <!-- Product header row -->
+      <thead>
+        <tr>
+          <th class="label-col">FEATURES</th>
+          <ng-container *ngFor="let item of data.products">
+            <th class="product-col">
+              <!-- Product image -->
+              <div class="product-img-wrap">
+                <img
+                  [src]="item.product.images[0] || 'assets/placeholder.png'"
+                  [alt]="item.product.name"
+                  class="product-img"
+                />
+              </div>
+
+              <!-- Name & price -->
+              <p class="product-name">{{ item.product.name }}</p>
+              <p class="product-price">${{ item.product.basePrice | number:'1.0-0' }}</p>
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <!-- Price row -->
+        <tr class="attr-row">
+          <td class="label-col">Price</td>
+          <ng-container *ngFor="let item of data.products">
+            <td class="attr-cell">
+              <strong>${{ item.product.basePrice | number:'1.0-0' }}</strong>
+            </td>
+          </ng-container>
+        </tr>
+
+        <!-- Dynamic attribute rows -->
+        <tr
+          *ngFor="let attr of visibleAttributes()"
+          class="attr-row"
+          [class.attr-row--differing]="isDiffering(attr)"
+        >
+          <td class="label-col">{{ attr }}</td>
+          <ng-container *ngFor="let item of data.products">
+            <td
+              class="attr-cell"
+              [class.attr-cell--differing]="isDiffering(attr)"
+            >
+              {{ getAttribute(item, attr) }}
+            </td>
+          </ng-container>
+        </tr>
+
+        <!-- View product row -->
+        <tr class="action-row">
+          <td class="label-col"></td>
+          <ng-container *ngFor="let item of data.products">
+            <td class="action-cell">
+              <a
+                mat-flat-button
+                class="btn-view"
+                [routerLink]="['/product', item.product.id]"
+              >
+                View Product
+              </a>
+            </td>
+          </ng-container>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

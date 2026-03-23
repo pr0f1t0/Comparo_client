@@ -1,0 +1,23 @@
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar__header">
+      <mat-icon>admin_panel_settings</mat-icon>
+      <span>Admin Panel</span>
+    </div>
+    <nav class="admin-sidebar__nav">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="item.path"
+        routerLinkActive="admin-sidebar__link--active"
+        [routerLinkActiveOptions]="{ exact: !!item.exact }"
+        class="admin-sidebar__link"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </a>
+    </nav>
+  </aside>
+  <main class="admin-content">
+    <router-outlet />
+  </main>
+</div>

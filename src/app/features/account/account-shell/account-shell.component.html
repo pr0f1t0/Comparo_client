@@ -1,0 +1,37 @@
+<div class="account-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__profile">
+      <div class="sidebar__avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="sidebar__info">
+        <span class="sidebar__name">{{ fullName() ?? 'User' }}</span>
+      </div>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="item.route"
+        routerLinkActive="sidebar__link--active"
+        class="sidebar__link"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </a>
+    </nav>
+
+    <button class="sidebar__logout" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Sign Out
+    </button>
+  </aside>
+
+  <!-- Main content -->
+  <div class="account-content">
+    <router-outlet />
+  </div>
+
+</div>

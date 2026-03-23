@@ -1,0 +1,31 @@
+<div *ngIf="visible()" class="compare-bar">
+  <div class="compare-bar__inner">
+
+    <div class="compare-bar__label">
+      <mat-icon>compare_arrows</mat-icon>
+      <span>Compare ({{ compareService.count() }})</span>
+    </div>
+
+    <div class="compare-bar__items">
+      <div *ngFor="let id of compareService.selectedIds()" class="compare-bar__item">
+        <img [src]="getProductImage(id)" [alt]="getProductName(id)" class="compare-bar__thumb" />
+        <span class="compare-bar__name">{{ getProductName(id) }}</span>
+        <button class="compare-bar__remove" (click)="remove(id)" aria-label="Remove">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="compare-bar__actions">
+      <button class="compare-bar__clear" (click)="clear()">Clear</button>
+      <button
+        class="compare-bar__go"
+        [disabled]="!canCompare()"
+        (click)="compare()"
+      >
+        Compare Now
+      </button>
+    </div>
+
+  </div>
+</div>

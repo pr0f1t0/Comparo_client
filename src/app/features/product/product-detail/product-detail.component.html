@@ -1,0 +1,299 @@
+<!-- Loading -->
+<div *ngIf="loading()" class="loading-state">
+  <mat-spinner diameter="40" />
+</div>
+
+<div *ngIf="!loading() && product()" class="product-page">
+
+  <!-- Top section: Gallery + Info -->
+  <div class="product-top">
+
+    <!-- Image gallery -->
+    <div class="gallery">
+      <div class="gallery__main">
+        <button
+          *ngIf="product()!.images.length > 1"
+          class="gallery__nav gallery__nav--prev"
+          (click)="prevImage()"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <img [src]="currentImage" [alt]="product()!.name" class="gallery__image" />
+        <button
+          *ngIf="product()!.images.length > 1"
+          class="gallery__nav gallery__nav--next"
+          (click)="nextImage()"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="product()!.images.length > 1" class="gallery__thumbs">
+        <button
+          *ngFor="let img of product()!.images; let i = index"
+          class="gallery__thumb"
+          [class.gallery__thumb--active]="i === selectedImageIndex()"
+          (click)="selectImage(i)"
+        >
+          <img [src]="img" [alt]="product()!.name + ' image ' + (i + 1)" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Product info -->
+    <div class="info">
+      <h1 class="info__name">{{ product()!.name }}</h1>
+
+      <div *ngIf="averageRating() > 0" class="info__rating">
+        <span class="stars">
+          <mat-icon
+            *ngFor="let s of getRatingStars(averageRating())"
+            [class.star--filled]="s === 1"
+            [class.star--empty]="s === 0"
+          >
+            {{ s === 1 ? 'star' : 'star_border' }}
+          </mat-icon>
+        </span>
+        <span class="rating-value">{{ averageRating() | number:'1.1-1' }}</span>
+        <span class="rating-count">({{ approvedReviews().length }} reviews)</span>
+      </div>
+
+      <p class="info__description">{{ product()!.description }}</p>
+
+      <!-- Price summary -->
+      <div class="info__price-block">
+        <div *ngIf="sortedOffers().length" class="info__price">
+          <span class="info__price-label">From</span>
+          <span class="info__price-value">
+            ${{ sortedOffers()[0].price | number:'1.2-2' }}
+          </span>
+          <span *ngIf="sortedOffers().length > 1" class="info__price-range">
+            — ${{ sortedOffers()[sortedOffers().length - 1].price | number:'1.2-2' }}
+          </span>
+        </div>
+        <div *ngIf="!sortedOffers().length" class="info__price">
+          <span class="info__price-value">${{ product()!.basePrice | number:'1.2-2' }}</span>
+        </div>
+        <span class="info__offers-count" *ngIf="sortedOffers().length">
+          {{ sortedOffers().length }} offer{{ sortedOffers().length > 1 ? 's' : '' }} available
+        </span>
+      </div>
+
+      <!-- Actions -->
+      <div class="info__actions">
+        <button
+          class="btn btn--primary"
+          *ngIf="sortedOffers().length"
+          (click)="setTab('offers')"
+        >
+          <mat-icon>local_offer</mat-icon>
+          View Offers
+        </button>
+        <button
+          class="btn btn--outline"
+          (click)="toggleFavorite()"
+        >
+          <mat-icon>{{ isFavorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+          {{ isFavorite() ? 'Saved' : 'Save' }}
+        </button>
+        <button
+          class="btn"
+          [class.btn--outline]="!compareService.isSelected(product()!.id)"
+          [class.btn--compare-active]="compareService.isSelected(product()!.id)"
+          (click)="compareService.toggle(product()!.id)"
+        >
+          <mat-icon>compare_arrows</mat-icon>
+          {{ compareService.isSelected(product()!.id) ? 'In Comparison' : 'Compare' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button
+      class="tabs__btn"
+      [class.tabs__btn--active]="activeTab() === 'specs'"
+      (click)="setTab('specs')"
+    >
+      <mat-icon>list_alt</mat-icon>
+      Specifications
+    </button>
+    <button
+      class="tabs__btn"
+      [class.tabs__btn--active]="activeTab() === 'offers'"
+      (click)="setTab('offers')"
+    >
+      <mat-icon>storefront</mat-icon>
+      Offers ({{ sortedOffers().length }})
+    </button>
+    <button
+      class="tabs__btn"
+      [class.tabs__btn--active]="activeTab() === 'reviews'"
+      (click)="setTab('reviews')"
+    >
+      <mat-icon>reviews</mat-icon>
+      Reviews ({{ approvedReviews().length + pendingReviews().length }})
+    </button>
+  </div>
+
+  <!-- Tab content -->
+
+  <!-- Specifications -->
+  <div *ngIf="activeTab() === 'specs'" class="tab-content">
+    <div *ngIf="attributeEntries().length" class="specs-table">
+      <div *ngFor="let attr of attributeEntries()" class="specs-row">
+        <span class="specs-row__key">{{ attr[0] }}</span>
+        <span class="specs-row__value">{{ attr[1] }}</span>
+      </div>
+    </div>
+    <div *ngIf="!attributeEntries().length" class="tab-empty">
+      <mat-icon>info_outline</mat-icon>
+      <p>No specifications available for this product.</p>
+    </div>
+  </div>
+
+  <!-- Offers -->
+  <div *ngIf="activeTab() === 'offers'" class="tab-content">
+    <div *ngIf="sortedOffers().length" class="offers-list">
+      <div *ngFor="let offer of sortedOffers()" class="offer-card">
+        <div class="offer-card__info">
+          <span class="offer-card__shop">
+            <mat-icon>storefront</mat-icon>
+            Shop {{ offer.shopId | slice:0:8 }}
+          </span>
+          <span
+            class="offer-card__status"
+            [class]="'offer-card__status--' + getAvailabilityClass(offer.availabilityStatus)"
+          >
+            {{ getAvailabilityLabel(offer.availabilityStatus) }}
+          </span>
+        </div>
+        <div class="offer-card__price-action">
+          <span class="offer-card__price">
+            ${{ offer.price | number:'1.2-2' }}
+            <small class="offer-card__currency">{{ offer.currency }}</small>
+          </span>
+          <span class="offer-card__updated">
+            Updated {{ formatDate(offer.lastUpdated) }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!sortedOffers().length" class="tab-empty">
+      <mat-icon>storefront</mat-icon>
+      <p>No offers available for this product yet.</p>
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div *ngIf="activeTab() === 'reviews'" class="tab-content">
+
+    <!-- Write review button -->
+    <div *ngIf="isAuthenticated() && !showReviewForm() && !pendingReviews().length" class="review-actions">
+      <button class="btn btn--primary" (click)="showReviewForm.set(true)">
+        <mat-icon>rate_review</mat-icon>
+        Write a Review
+      </button>
+    </div>
+
+    <!-- Review form -->
+    <div *ngIf="showReviewForm()" class="review-form">
+      <h3 class="review-form__title">Write a Review</h3>
+      <div class="review-form__rating">
+        <span class="review-form__label">Your Rating</span>
+        <span class="review-form__stars">
+          <mat-icon
+            *ngFor="let s of getStarArray()"
+            class="review-form__star"
+            [class.star--filled]="s <= reviewRating"
+            [class.star--empty]="s > reviewRating"
+            (click)="setReviewRating(s)"
+          >
+            {{ s <= reviewRating ? 'star' : 'star_border' }}
+          </mat-icon>
+        </span>
+      </div>
+      <textarea
+        class="review-form__comment"
+        placeholder="Share your experience with this product (minimum 50 characters)..."
+        [(ngModel)]="reviewComment"
+        rows="4"
+        maxlength="1000"
+      ></textarea>
+      <span class="review-form__char-count" [class.review-form__char-count--short]="reviewComment.length < 50">
+        {{ reviewComment.length }}/1000 (min 50)
+      </span>
+      <div *ngIf="reviewError()" class="review-form__error">
+        <mat-icon>error_outline</mat-icon>
+        {{ reviewError() }}
+      </div>
+      <div class="review-form__btns">
+        <button
+          class="btn btn--outline"
+          (click)="showReviewForm.set(false)"
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn--primary"
+          [disabled]="submittingReview() || reviewComment.trim().length < 50"
+          (click)="submitReview()"
+        >
+          {{ submittingReview() ? 'Submitting...' : 'Submit Review' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Pending reviews (only visible to author in current session) -->
+    <div *ngIf="pendingReviews().length" class="reviews-list">
+      <div *ngFor="let review of pendingReviews()" class="review-card review-card--pending">
+        <div class="review-card__header">
+          <span class="stars">
+            <mat-icon
+              *ngFor="let s of getRatingStars(review.rating)"
+              [class.star--filled]="s === 1"
+              [class.star--empty]="s === 0"
+            >
+              {{ s === 1 ? 'star' : 'star_border' }}
+            </mat-icon>
+          </span>
+          <span class="review-card__badge">Pending moderation</span>
+        </div>
+        <p class="review-card__comment">{{ review.comment }}</p>
+      </div>
+    </div>
+
+    <!-- Approved reviews -->
+    <div *ngIf="approvedReviews().length" class="reviews-list">
+      <div *ngFor="let review of approvedReviews()" class="review-card">
+        <div class="review-card__header">
+          <span class="stars">
+            <mat-icon
+              *ngFor="let s of getRatingStars(review.rating)"
+              [class.star--filled]="s === 1"
+              [class.star--empty]="s === 0"
+            >
+              {{ s === 1 ? 'star' : 'star_border' }}
+            </mat-icon>
+          </span>
+          <span class="review-card__date">{{ formatDate(review.createdAt) }}</span>
+        </div>
+        <p class="review-card__comment">{{ review.comment }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="!approvedReviews().length && !pendingReviews().length && !showReviewForm()" class="tab-empty">
+      <mat-icon>chat_bubble_outline</mat-icon>
+      <p *ngIf="isAuthenticated()">No reviews yet. Be the first to review this product!</p>
+      <p *ngIf="!isAuthenticated()">Login to review this product!</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Not found -->
+<div *ngIf="!loading() && !product()" class="empty-state">
+  <mat-icon>error_outline</mat-icon>
+  <h3>Product not found</h3>
+  <p>The product you're looking for doesn't exist or has been removed.</p>
+</div>

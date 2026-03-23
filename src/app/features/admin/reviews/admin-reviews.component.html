@@ -1,0 +1,49 @@
+<h2 class="page-title">Review Moderation</h2>
+
+<div *ngIf="loading()" class="loading-state">
+  <mat-spinner diameter="36" />
+</div>
+
+<div *ngIf="!loading() && reviews().length" class="reviews-list">
+  <div *ngFor="let review of reviews()" class="review-card">
+    <div class="review-card__top">
+      <div class="review-card__meta">
+        <span class="stars">
+          <mat-icon
+            *ngFor="let s of getRatingStars(review.rating)"
+            [class.star--filled]="s === 1"
+            [class.star--empty]="s === 0"
+          >
+            {{ s === 1 ? 'star' : 'star_border' }}
+          </mat-icon>
+        </span>
+        <span class="review-card__date">{{ formatDate(review.createdAt) }}</span>
+      </div>
+      <span class="review-card__product">Product: {{ review.productId | slice:0:12 }}...</span>
+    </div>
+    <p class="review-card__comment">{{ review.comment }}</p>
+    <div class="review-card__actions">
+      <button
+        class="action-btn action-btn--approve"
+        [disabled]="actionInProgress() === review.id"
+        (click)="approve(review.id)"
+      >
+        <mat-icon>check_circle</mat-icon>
+        Approve
+      </button>
+      <button
+        class="action-btn action-btn--reject"
+        [disabled]="actionInProgress() === review.id"
+        (click)="reject(review.id)"
+      >
+        <mat-icon>cancel</mat-icon>
+        Reject
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loading() && !reviews().length" class="empty-state">
+  <mat-icon>check_circle_outline</mat-icon>
+  <p>No pending reviews. All caught up!</p>
+</div>

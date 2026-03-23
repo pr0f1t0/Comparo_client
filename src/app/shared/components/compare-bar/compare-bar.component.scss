@@ -1,0 +1,150 @@
+@use '../../../styles/variables' as v;
+
+.compare-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: v.$surface;
+  border-top: 2px solid v.$primary;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideUp 0.25s ease;
+
+  &__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: v.$primary;
+    white-space: nowrap;
+
+    mat-icon {
+      font-size: 1.2rem;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+
+  &__items {
+    flex: 1;
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    min-width: 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: v.$background;
+    border: 1px solid v.$border;
+    border-radius: 8px;
+    padding: 0.35rem 0.5rem;
+    flex-shrink: 0;
+    max-width: 220px;
+  }
+
+  &__thumb {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border-radius: 4px;
+    background: v.$surface;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: v.$text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 0.9rem;
+      width: 0.9rem;
+      height: 0.9rem;
+      color: v.$text-secondary;
+      transition: color 0.15s;
+    }
+
+    &:hover mat-icon {
+      color: v.$error;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  &__clear {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: v.$text-secondary;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+
+    &:hover {
+      color: v.$error;
+    }
+  }
+
+  &__go {
+    background: v.$primary;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+
+    &:hover {
+      background: v.$primary-dark;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

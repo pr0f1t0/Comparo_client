@@ -1,0 +1,50 @@
+<h2 class="page-title">User Management</h2>
+
+<div *ngIf="loading()" class="loading-state">
+  <mat-spinner diameter="36" />
+</div>
+
+<div *ngIf="!loading()" class="table-wrap">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users()">
+        <td>{{ user.email }}</td>
+        <td>{{ user.firstName || '—' }}</td>
+        <td>
+          <span
+            class="status-badge"
+            [class.status-badge--active]="user.enabled"
+            [class.status-badge--banned]="!user.enabled"
+          >
+            {{ user.enabled ? 'Active' : 'Banned' }}
+          </span>
+        </td>
+        <td>
+          <button
+            class="action-btn"
+            [class.action-btn--ban]="user.enabled"
+            [class.action-btn--unban]="!user.enabled"
+            [disabled]="actionInProgress() === user.id"
+            (click)="toggleUserStatus(user)"
+          >
+            <mat-icon>{{ user.enabled ? 'block' : 'check_circle' }}</mat-icon>
+            {{ actionInProgress() === user.id ? '...' : (user.enabled ? 'Ban' : 'Unban') }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!users().length" class="empty-state">
+    <mat-icon>people_outline</mat-icon>
+    <p>No users found.</p>
+  </div>
+</div>

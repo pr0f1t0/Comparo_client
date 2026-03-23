@@ -1,0 +1,110 @@
+@use '../../../../app/styles/variables' as v;
+
+.favorites-page {
+  max-width: 800px;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: v.$text-primary;
+  margin: 0 0 1.5rem;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 4rem 0;
+  color: v.$text-secondary;
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    max-width: 360px;
+    text-align: center;
+  }
+}
+
+// ── Favorites list ───────────────────────────────────────────
+.favorites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  &__img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: v.$background;
+    flex-shrink: 0;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: v.$text-primary;
+    margin: 0 0 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__price {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: v.$primary;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 1.2rem;
+      width: 1.2rem;
+      height: 1.2rem;
+      color: v.$text-secondary;
+    }
+
+    .fav-heart {
+      color: v.$error;
+    }
+  }
+}

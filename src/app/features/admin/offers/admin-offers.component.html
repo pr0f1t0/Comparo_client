@@ -1,0 +1,70 @@
+<h2 class="page-title">Offer Management</h2>
+
+<div *ngIf="loading()" class="loading-state">
+  <mat-spinner diameter="36" />
+</div>
+
+<div *ngIf="!loading()" class="offers-layout">
+  <!-- Product selector -->
+  <div class="product-selector">
+    <h3 class="section-title">Select a Product</h3>
+    <div class="product-list">
+      <button
+        *ngFor="let product of products()"
+        class="product-item"
+        [class.product-item--active]="selectedProductId() === product.id"
+        (click)="selectProduct(product.id)"
+      >
+        <img
+          class="product-item__img"
+          [src]="product.images.length ? product.images[0] : 'assets/placeholder.png'"
+          [alt]="product.name"
+        />
+        <span class="product-item__name">{{ product.name }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Offers for selected product -->
+  <div class="offers-panel" *ngIf="selectedProductId()">
+    <h3 class="section-title">
+      Offers for "{{ getSelectedProductName() }}"
+    </h3>
+
+    <div *ngIf="loadingOffers()" class="loading-state">
+      <mat-spinner diameter="28" />
+    </div>
+
+    <div *ngIf="!loadingOffers() && offers().length" class="offers-list">
+      <div *ngFor="let offer of offers()" class="offer-row">
+        <div class="offer-row__info">
+          <span class="offer-row__shop">
+            <mat-icon>storefront</mat-icon>
+            Shop {{ offer.shopId | slice:0:8 }}
+          </span>
+          <span class="offer-row__status">{{ getAvailabilityLabel(offer.availabilityStatus) }}</span>
+        </div>
+        <div class="offer-row__right">
+          <span class="offer-row__price">${{ offer.price | number:'1.2-2' }}</span>
+          <button
+            class="action-btn action-btn--delete"
+            [disabled]="deletingId() === offer.id"
+            (click)="deleteOffer(offer.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loadingOffers() && !offers().length" class="empty-state">
+      <mat-icon>local_offer</mat-icon>
+      <p>No offers for this product.</p>
+    </div>
+  </div>
+
+  <div *ngIf="!selectedProductId()" class="empty-state">
+    <mat-icon>touch_app</mat-icon>
+    <p>Select a product to view its offers.</p>
+  </div>
+</div>

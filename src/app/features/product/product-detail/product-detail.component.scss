@@ -1,0 +1,639 @@
+@use '../../../../app/styles/variables' as v;
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 5rem 0;
+}
+
+.product-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+// ── Top section ─────────────────────────────────────────────
+.product-top {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+// ── Gallery ─────────────────────────────────────────────────
+.gallery {
+  flex: 0 0 420px;
+
+  &__main {
+    position: relative;
+    background: v.$background;
+    border: 1px solid v.$border;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 380px;
+    overflow: hidden;
+  }
+
+  &__image {
+    max-height: 90%;
+    max-width: 90%;
+    object-fit: contain;
+  }
+
+  &__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: v.$surface;
+    border: 1px solid v.$border;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: all 0.15s;
+    z-index: 2;
+
+    &:hover {
+      border-color: v.$primary;
+      color: v.$primary;
+    }
+
+    &--prev { left: 0.75rem; }
+    &--next { right: 0.75rem; }
+
+    mat-icon {
+      font-size: 1.2rem;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+
+  &__thumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  &__thumb {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border: 2px solid v.$border;
+    border-radius: 8px;
+    background: v.$background;
+    padding: 4px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    overflow: hidden;
+
+    &:hover { border-color: v.$primary; }
+
+    &--active {
+      border-color: v.$primary;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+// ── Info panel ──────────────────────────────────────────────
+.info {
+  flex: 1;
+  min-width: 0;
+
+  &__name {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: v.$text-primary;
+    margin: 0 0 0.75rem;
+    line-height: 1.3;
+  }
+
+  &__rating {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  &__description {
+    font-size: 0.9rem;
+    color: v.$text-secondary;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+  }
+
+  &__price-block {
+    background: v.$background;
+    border: 1px solid v.$border;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  &__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  &__price-label {
+    font-size: 0.8rem;
+    color: v.$text-secondary;
+    font-weight: 500;
+  }
+
+  &__price-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: v.$primary;
+  }
+
+  &__price-range {
+    font-size: 1rem;
+    color: v.$text-secondary;
+  }
+
+  &__offers-count {
+    display: block;
+    font-size: 0.78rem;
+    color: v.$text-secondary;
+    margin-top: 0.25rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+}
+
+// ── Shared stars ────────────────────────────────────────────
+.stars {
+  display: flex;
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .star--filled { color: v.$primary; }
+  .star--empty  { color: v.$border; }
+}
+
+.rating-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: v.$text-primary;
+}
+
+.rating-count {
+  font-size: 0.82rem;
+  color: v.$text-secondary;
+}
+
+// ── Buttons ─────────────────────────────────────────────────
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+
+  mat-icon {
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  &--primary {
+    background: v.$primary;
+    color: #fff;
+
+    &:hover { background: v.$primary-dark; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+
+  &--outline {
+    background: v.$surface;
+    color: v.$text-primary;
+    border: 1px solid v.$border;
+
+    &:hover { border-color: v.$primary; color: v.$primary; }
+  }
+
+  &--compare-active {
+    background: v.$primary;
+    color: #fff;
+
+    &:hover { background: v.$primary-dark; }
+  }
+}
+
+// ── Tabs ────────────────────────────────────────────────────
+.tabs {
+  display: flex;
+  border-bottom: 2px solid v.$border;
+  margin-bottom: 1.5rem;
+  gap: 0.25rem;
+}
+
+.tabs__btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: v.$text-secondary;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+
+  mat-icon {
+    font-size: 1.1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  &:hover {
+    color: v.$text-primary;
+  }
+
+  &--active {
+    color: v.$primary;
+    border-bottom-color: v.$primary;
+    font-weight: 600;
+  }
+}
+
+// ── Tab content ─────────────────────────────────────────────
+.tab-content {
+  min-height: 200px;
+}
+
+.tab-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem 0;
+  color: v.$text-secondary;
+
+  mat-icon {
+    font-size: 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+// ── Specifications table ────────────────────────────────────
+.specs-table {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.specs-row {
+  display: flex;
+  padding: 0.75rem 1.25rem;
+
+  &:nth-child(even) {
+    background: v.$background;
+  }
+
+  &__key {
+    flex: 0 0 220px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: v.$text-secondary;
+  }
+
+  &__value {
+    flex: 1;
+    font-size: 0.85rem;
+    color: v.$text-primary;
+  }
+}
+
+// ── Offers list ─────────────────────────────────────────────
+.offers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.offer-card {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: box-shadow 0.15s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__shop {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: v.$text-primary;
+
+    mat-icon {
+      font-size: 1.1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      color: v.$text-secondary;
+    }
+  }
+
+  &__status {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+
+    &--available {
+      background: #e8f5e9;
+      color: v.$success;
+    }
+
+    &--unavailable {
+      background: #ffebee;
+      color: v.$error;
+    }
+
+    &--preorder {
+      background: #fff3e0;
+      color: v.$warning;
+    }
+  }
+
+  &__price-action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+  }
+
+  &__price {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: v.$primary;
+  }
+
+  &__currency {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: v.$text-secondary;
+  }
+
+  &__updated {
+    font-size: 0.72rem;
+    color: v.$text-secondary;
+  }
+}
+
+// ── Reviews ─────────────────────────────────────────────────
+.review-actions {
+  margin-bottom: 1.25rem;
+}
+
+.review-form {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: v.$text-primary;
+    margin: 0 0 1rem;
+  }
+
+  &__rating {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  &__label {
+    font-size: 0.85rem;
+    color: v.$text-secondary;
+    font-weight: 500;
+  }
+
+  &__stars {
+    display: flex;
+    gap: 0.15rem;
+  }
+
+  &__star {
+    cursor: pointer;
+    font-size: 1.5rem !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    transition: transform 0.1s;
+
+    &:hover { transform: scale(1.15); }
+  }
+
+  &__comment {
+    width: 100%;
+    border: 1px solid v.$border;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: v.$text-primary;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+
+    &:focus { border-color: v.$primary; }
+  }
+
+  &__char-count {
+    display: block;
+    font-size: 0.75rem;
+    color: v.$text-secondary;
+    text-align: right;
+    margin-top: 0.25rem;
+
+    &--short {
+      color: v.$error;
+    }
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.75rem;
+    margin-top: 0.75rem;
+    background: #ffebee;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: v.$error;
+
+    mat-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  &__btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.review-card {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  &__date {
+    font-size: 0.78rem;
+    color: v.$text-secondary;
+  }
+
+  &__badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: #fff3e0;
+    color: v.$warning;
+  }
+
+  &--pending {
+    border-style: dashed;
+    opacity: 0.85;
+  }
+
+  &__comment {
+    font-size: 0.88rem;
+    color: v.$text-primary;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+// ── Not found state ─────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 5rem 0;
+  color: v.$text-secondary;
+  text-align: center;
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: v.$text-primary;
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.85rem;
+    margin: 0;
+  }
+}
+
+// ── Responsive ──────────────────────────────────────────────
+@media (max-width: 768px) {
+  .product-top {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .gallery {
+    flex: none;
+
+    &__main { height: 280px; }
+  }
+
+  .specs-row__key {
+    flex: 0 0 140px;
+  }
+
+  .offer-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    &__price-action {
+      align-items: flex-start;
+    }
+  }
+}

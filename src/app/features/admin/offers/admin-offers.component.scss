@@ -1,0 +1,183 @@
+@use '../../../../app/styles/variables' as v;
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: v.$text-primary;
+  margin: 0 0 1.5rem;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: v.$text-primary;
+  margin: 0 0 0.75rem;
+}
+
+.offers-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.product-selector {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid v.$border;
+  border-radius: 8px;
+  background: v.$surface;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.82rem;
+  color: v.$text-primary;
+
+  &:hover {
+    border-color: v.$primary;
+  }
+
+  &--active {
+    background: v.$primary-light;
+    border-color: v.$primary;
+    font-weight: 600;
+  }
+
+  &__img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    border-radius: 4px;
+    background: v.$background;
+  }
+
+  &__name {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.offers-panel {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.offers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.offer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid v.$border;
+  border-radius: 8px;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__shop {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: v.$text-primary;
+
+    mat-icon {
+      font-size: 1rem;
+      width: 1rem;
+      height: 1rem;
+      color: v.$text-secondary;
+    }
+  }
+
+  &__status {
+    font-size: 0.72rem;
+    color: v.$text-secondary;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: v.$primary;
+  }
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid v.$border;
+  border-radius: 6px;
+  background: v.$surface;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  mat-icon {
+    font-size: 0.95rem;
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  &--delete {
+    color: v.$text-secondary;
+    &:hover { background: #ffebee; color: v.$error; border-color: v.$error; }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem 0;
+  color: v.$text-secondary;
+
+  mat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
+  p { font-size: 0.9rem; margin: 0; }
+}

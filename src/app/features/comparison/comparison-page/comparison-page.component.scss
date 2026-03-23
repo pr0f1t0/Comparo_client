@@ -1,0 +1,128 @@
+@use '../../../styles/variables' as v;
+
+.comparison-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+// ── Loading / Error overlay ─────────────────────────────────
+.state-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 300px;
+  color: v.$text-secondary;
+
+  mat-icon { font-size: 3rem; width: 3rem; height: 3rem; }
+
+  &--error {
+    color: #d32f2f;
+  }
+}
+
+// ── Page header ─────────────────────────────────────────────
+.page-header {
+  margin-bottom: 2rem;
+
+  .breadcrumb {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: v.$primary;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: v.$text-primary;
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .subtitle {
+    color: v.$text-secondary;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+// ── Trust badges ────────────────────────────────────────────
+.trust-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+
+  .badge {
+    background: v.$surface;
+    border: 1px solid v.$border;
+    border-radius: 12px;
+    padding: 1.5rem;
+
+    &__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: color-mix(in srgb, v.$primary 12%, transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+
+      mat-icon { color: v.$primary; }
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: v.$text-primary;
+      margin: 0 0 0.4rem;
+    }
+
+    p {
+      font-size: 0.82rem;
+      color: v.$text-secondary;
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+}
+
+// ── CTA section ─────────────────────────────────────────────
+.cta-section {
+  margin-top: 3rem;
+  text-align: center;
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: v.$text-primary;
+    margin: 0 0 0.5rem;
+  }
+
+  p {
+    color: v.$text-secondary;
+    font-size: 0.9rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .cta-btn {
+    background: v.$primary;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0 1.5rem;
+    height: 44px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}

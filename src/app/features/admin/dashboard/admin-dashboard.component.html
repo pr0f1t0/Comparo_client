@@ -1,0 +1,42 @@
+<h2 class="page-title">Dashboard</h2>
+
+<div *ngIf="loading()" class="loading-state">
+  <mat-spinner diameter="36" />
+</div>
+
+<div *ngIf="!loading() && stats()" class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--users">
+      <mat-icon>people</mat-icon>
+    </div>
+    <div class="stat-card__info">
+      <span class="stat-card__value">{{ stats()!.totalUsers | number }}</span>
+      <span class="stat-card__label">Total Users</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--products">
+      <mat-icon>inventory_2</mat-icon>
+    </div>
+    <div class="stat-card__info">
+      <span class="stat-card__value">{{ stats()!.totalProducts | number }}</span>
+      <span class="stat-card__label">Total Products</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--reviews">
+      <mat-icon>rate_review</mat-icon>
+    </div>
+    <div class="stat-card__info">
+      <span class="stat-card__value">{{ stats()!.pendingReviews | number }}</span>
+      <span class="stat-card__label">Pending Reviews</span>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loading() && !stats()" class="empty-state">
+  <mat-icon>error_outline</mat-icon>
+  <p>Failed to load statistics.</p>
+</div>

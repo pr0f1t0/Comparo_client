@@ -1,0 +1,118 @@
+@use '../../../../app/styles/variables' as v;
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: v.$text-primary;
+  margin: 0 0 1.5rem;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.table-wrap {
+  background: v.$surface;
+  border: 1px solid v.$border;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.85rem;
+  }
+
+  th {
+    background: v.$background;
+    font-weight: 600;
+    color: v.$text-secondary;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid v.$border;
+  }
+
+  td {
+    color: v.$text-primary;
+    border-bottom: 1px solid v.$border;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+
+  &--active {
+    background: #e8f5e9;
+    color: v.$success;
+  }
+
+  &--banned {
+    background: #ffebee;
+    color: v.$error;
+  }
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid v.$border;
+  border-radius: 6px;
+  background: v.$surface;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  mat-icon {
+    font-size: 0.95rem;
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  &--ban {
+    color: v.$error;
+    &:hover { background: #ffebee; border-color: v.$error; }
+  }
+
+  &--unban {
+    color: v.$success;
+    &:hover { background: #e8f5e9; border-color: v.$success; }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem 0;
+  color: v.$text-secondary;
+
+  mat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
+  p { font-size: 0.9rem; margin: 0; }
+}

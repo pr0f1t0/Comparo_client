@@ -1,0 +1,93 @@
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero__content">
+    <h1 class="hero__title">
+      Master the Art of
+      <span class="hero__highlight">Comparison.</span>
+    </h1>
+    <p class="hero__subtitle">
+      Join thousands of users who make smarter decisions every day using
+      our advanced comparison engine.
+    </p>
+
+    <!-- Search bar -->
+    <div class="hero__search">
+      <div class="hero__search-bar">
+        <mat-icon class="hero__search-icon">search</mat-icon>
+        <input
+          type="text"
+          class="hero__search-input"
+          placeholder="Search for smartphones, laptops, or coffee machines..."
+          (keyup.enter)="onSearch($any($event.target).value)"
+          #heroSearch
+        />
+      </div>
+      <button
+        mat-flat-button
+        class="hero__search-btn"
+        (click)="onSearch(heroSearch.value)"
+      >
+        Find
+      </button>
+    </div>
+
+    <!-- Trending tags -->
+    <div *ngIf="trending().length" class="hero__trending">
+      <span class="hero__trending-label">Trending:</span>
+      <ng-container *ngFor="let product of trending().slice(0, 3)">
+        <span class="hero__tag">{{ product.name }}</span>
+      </ng-container>
+    </div>
+  </div>
+</section>
+
+<!-- All Categories -->
+<section class="section categories-section">
+  <h2 class="section__title">All Categories</h2>
+  <p class="section__subtitle">Browse our comprehensive list of comparison categories</p>
+
+  <div *ngIf="loadingCategories()" class="loading-state">
+    <mat-spinner diameter="36" />
+  </div>
+
+  <div *ngIf="!loadingCategories()" class="categories-grid">
+    <div *ngFor="let cat of categories()" class="cat-card" (click)="onCategoryClick(cat.id)" style="cursor: pointer;">
+      <div class="cat-card__icon">
+        <mat-icon>{{ getCategoryIcon(cat.name) }}</mat-icon>
+      </div>
+      <h3 class="cat-card__name">{{ cat.name }}</h3>
+      <p *ngIf="getSubcategoryNames(cat) as subs" class="cat-card__desc">{{ subs }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Trending Products -->
+<section class="section trending-section">
+  <h2 class="section__title">Trending Products</h2>
+  <p class="section__subtitle">See what other users are comparing right now</p>
+
+  <div *ngIf="loadingTrending()" class="loading-state">
+    <mat-spinner diameter="36" />
+  </div>
+
+  <div *ngIf="!loadingTrending() && trending().length" class="trending-grid">
+    <div *ngFor="let product of trending()" class="product-card">
+      <div class="product-card__img-wrap">
+        <img
+          [src]="getProductImage(product)"
+          [alt]="product.name"
+          class="product-card__img"
+        />
+      </div>
+      <div class="product-card__body">
+        <h4 class="product-card__name">{{ product.name }}</h4>
+        <p class="product-card__price">${{ product.basePrice | number:'1.2-2' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loadingTrending() && !trending().length" class="empty-state">
+    <mat-icon>trending_up</mat-icon>
+    <p>No trending products at the moment.</p>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+@use '../../../../app/styles/variables' as v;
+
+.footer {
+  border-top: 1px solid v.$border;
+  background: v.$surface;
+  margin-top: auto;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    font-weight: 700;
+    font-size: 1rem;
+    color: v.$text-primary;
+  }
+
+  &__copyright {
+    font-size: 0.75rem;
+    color: v.$text-secondary;
+    margin: 0.15rem 0 0;
+  }
+
+  &__links {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+      font-size: 0.8rem;
+      color: v.$text-secondary;
+      text-decoration: none;
+      transition: color 0.15s;
+
+      &:hover {
+        color: v.$text-primary;
+      }
+    }
+  }
+}

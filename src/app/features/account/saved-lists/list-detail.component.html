@@ -1,0 +1,43 @@
+<div class="list-detail">
+  <button class="back-btn" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Back to lists
+  </button>
+
+  <div *ngIf="list() as l" class="list-detail__header">
+    <h1 class="list-detail__title">{{ l.name }}</h1>
+    <span class="list-detail__count">{{ l.productIds.length }} items</span>
+  </div>
+
+  <div *ngIf="loading()" class="loading-state">
+    <mat-spinner diameter="36" />
+  </div>
+
+  <div *ngIf="!loading() && !products().length" class="empty-state">
+    <mat-icon>inventory_2</mat-icon>
+    <p>This list is empty. Add products from the search page.</p>
+  </div>
+
+  <div *ngIf="!loading() && products().length" class="products-list">
+    <div *ngFor="let product of products()" class="product-row">
+      <div class="product-row__img-wrap">
+        <img
+          [src]="getProductImage(product)"
+          [alt]="product.name"
+          class="product-row__img"
+        />
+      </div>
+      <div class="product-row__info">
+        <h3 class="product-row__name">{{ product.name }}</h3>
+        <p class="product-row__price">${{ product.basePrice | number:'1.2-2' }}</p>
+      </div>
+      <button
+        class="product-row__remove"
+        (click)="removeProduct(product.id)"
+        aria-label="Remove from list"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

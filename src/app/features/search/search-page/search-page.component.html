@@ -1,7 +1,11 @@
 <div class="search-layout">
 
   <!-- Filters Sidebar -->
-  <aside class="filters">
+  <aside class="filters" [class.filters--collapsed]="!filtersOpen">
+    <button class="filters__mobile-toggle" (click)="filtersOpen = !filtersOpen">
+      <mat-icon>filter_list</mat-icon>
+      {{ filtersOpen ? 'Hide Filters' : 'Show Filters' }}
+    </button>
     <div class="filters__header">
       <h3 class="filters__title">
         <mat-icon>filter_list</mat-icon>

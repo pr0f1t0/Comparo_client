@@ -119,3 +119,50 @@
   flex: 1;
   min-width: 0;
 }
+
+@media (max-width: 768px) {
+  .account-layout {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    min-height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+
+    &__profile {
+      padding-bottom: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    &__nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    &__link {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+
+      mat-icon { display: none; }
+    }
+
+    &__logout {
+      margin-top: 0;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar__nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .sidebar__link {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}

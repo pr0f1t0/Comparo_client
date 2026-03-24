@@ -54,6 +54,9 @@ export class SearchPageComponent implements OnInit {
   maxPrice: number | null = null;
   selectedAttributes: Record<string, string> = {};
 
+  // Mobile filter toggle
+  filtersOpen = false;
+
   // Add-to-list state
   openDropdownProductId: string | null = null;
   creatingNewList = false;

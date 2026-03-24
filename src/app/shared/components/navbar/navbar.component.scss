@@ -138,3 +138,33 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .navbar {
+    &__inner {
+      gap: 0.75rem;
+      padding: 0 1rem;
+    }
+
+    &__search {
+      max-width: none;
+      flex: 1;
+    }
+
+    &__logo-text {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    &__search-input {
+      font-size: 0.78rem;
+
+      &::placeholder {
+        content: 'Search...';
+      }
+    }
+  }
+}

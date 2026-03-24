@@ -160,3 +160,23 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .page-title {
+    font-size: 1.3rem;
+  }
+
+  .lists-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .list-card__actions {
+    opacity: 1;
+  }
+}

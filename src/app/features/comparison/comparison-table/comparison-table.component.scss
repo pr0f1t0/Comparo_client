@@ -148,3 +148,42 @@
     color: v.$primary !important;
   }
 }
+
+@media (max-width: 768px) {
+  .table-toolbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .comparison-table {
+    min-width: 500px;
+  }
+
+  .label-col {
+    width: 100px;
+    min-width: 80px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .product-col {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .product-img-wrap {
+    width: 56px;
+    height: 56px;
+  }
+
+  .product-name {
+    font-size: 0.78rem;
+  }
+
+  .product-price {
+    font-size: 0.9rem;
+  }
+
+  .attr-cell {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.78rem;
+  }
+}
